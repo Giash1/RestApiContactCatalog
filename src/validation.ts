@@ -14,6 +14,8 @@ export function validateEmail(email: string): boolean {
   
   export function validatePersonalNumber(pn: string): boolean {
       const re = /^[0-9]{6}-?[0-9]{4}$/;
+    //   regular expression is designed to match strings that start with 6 digits, may have an optional hyphen,
+    //  and end with 4 digits 134532-4321
       return re.test(pn);
   }
   
