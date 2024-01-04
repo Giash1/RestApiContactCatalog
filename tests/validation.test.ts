@@ -6,7 +6,7 @@ describe('validateEmail', () => {
     });
 
     it('should return false for an invalid email', () => {
-        expect(validateEmail('invalid email')).toBe(false);
+        expect(validateEmail('giashgmail.com')).toBe(false);
     });
 });
 
