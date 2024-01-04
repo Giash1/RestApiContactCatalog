@@ -17,7 +17,7 @@ describe('validateZipCode', () => {
     });
 
     it('should return false for an invalid zip code', () => {
-        expect(validateZipCode('12345')).toBe(false);
+        expect(validateZipCode('1234')).toBe(false);
     });
 });
 
