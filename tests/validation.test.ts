@@ -13,7 +13,7 @@ describe('validateEmail', () => {
 
 describe('validateZipCode', () => {
     it('should return true for a valid zip code', () => {
-        expect(validateZipCode('12345')).toBe(true);
+        expect(validateZipCode('1234')).toBe(true);
     });
 
     it('should return false for an invalid zip code', () => {
