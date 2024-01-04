@@ -27,7 +27,7 @@ describe('validatePersonalNumber', () => {
     });
 
     it('should return false for an invalid personal number', () => {
-        expect(validatePersonalNumber('123456-7899')).toBe(false);
+        expect(validatePersonalNumber('123456-78999')).toBe(false);
     });
 });
 
