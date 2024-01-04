@@ -2,7 +2,7 @@ import { validateEmail, validateZipCode, validatePersonalNumber, validateText  }
 
 describe('validateEmail', () => {
     it('should return true for a valid email', () => {
-        expect(validateEmail('test@example.com')).toBe(true);
+        expect(validateEmail('giash@gmail.com')).toBe(true);
     });
 
     it('should return false for an invalid email', () => {
