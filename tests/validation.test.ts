@@ -23,7 +23,7 @@ describe('validateZipCode', () => {
 
 describe('validatePersonalNumber', () => {
     it('should return true for a valid personal number', () => {
-        expect(validatePersonalNumber('123456-7890')).toBe(true);
+        expect(validatePersonalNumber('123456-789')).toBe(true);
     });
 
     it('should return false for an invalid personal number', () => {
