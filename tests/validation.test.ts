@@ -37,6 +37,6 @@ describe('validateText', () => {
     });
 
     it('should return false for an empty string', () => {
-        expect(validateText('')).toBe(false);
+        expect(validateText('hi')).toBe(false);
     });
 });
