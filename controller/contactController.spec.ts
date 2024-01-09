@@ -24,7 +24,7 @@ describe('creatContact', () => {
                 address: {
                     street: 'Development Street 12',
                     city: 'Stockholm',
-                    zipCode: '111 22',
+                    zipCode: '12345',
                     country: 'Sweden'
                 },
                 phone: '1234567890'
@@ -36,14 +36,17 @@ describe('creatContact', () => {
             status: jest.fn().mockReturnThis()
         } as unknown as Response;
 
-        await createContact(req, res);
+        console.log('Calling createContact...');
 
+        await createContact(req, res);
+        console.log('Checking if spy was called...');
         expect(saveSpy).toHaveBeenCalled();
         expect(res.json).toHaveBeenCalledWith(expect.any(Object));
         expect(res.status).toHaveBeenCalledWith(201); // expect a 201 status
 
         saveSpy.mockRestore();
     });
+    
 })
 
 // getting all contacts

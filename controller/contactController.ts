@@ -7,23 +7,38 @@ import { validateEmail, validateZipCode, validatePersonalNumber, validateText } 
 export async function createContact(req: Request, res: Response) {
     const { firstname, lastname, email, personalnumber, address, phone } = req.body;
 
-    // Validate input
-    if (!validateText(firstname)) return res.status(400).json({ error: 'firstname is missing' });
-    if (!validateText(lastname)) return res.status(400).json({ error: 'lastname is missing' });
-    if (!validateEmail(email)) return res.status(400).json({ error: 'email is not valid' });
-    if (!validatePersonalNumber(personalnumber)) return res.status(400).json({ error: 'personalnumber is not valid' });
-    if (!validateText(address.street)) return res.status(400).json({ error: 'address.street is missing' });
-    if (!validateText(address.city)) return res.status(400).json({ error: 'address.city is missing' });
-    if (!validateZipCode(address.zipCode)) return res.status(400).json({ error: 'address.zipCode is not valid' });
-    if (!validateText(address.country)) return res.status(400).json({ error: 'address.country is missing' });
-    if (!validateText(phone)) return res.status(400).json({ error: 'phone is missing' });
-
-    const contact = new Contact(req.body);
     try {
+        console.log('Validating firstname...');
+        if (!validateText(firstname)) throw new Error('firstname is missing');
+        console.log('Validating lastname...');
+        if (!validateText(lastname)) throw new Error('lastname is missing');
+        console.log('Validating email...');
+        if (!validateEmail(email)) throw new Error('email is not valid');
+        console.log('Validating personalnumber...');
+        if (!validatePersonalNumber(personalnumber)) throw new Error('personalnumber is not valid');
+        console.log('Validating address.street...');
+        if (!validateText(address.street)) throw new Error('address.street is missing');
+        console.log('Validating address.city...');
+        if (!validateText(address.city)) throw new Error('address.city is missing');
+        console.log('Validating adrees.zipcode...');
+        if (!validateZipCode(address.zipCode)) throw new Error('address.zipCode is not valid');
+        console.log('Validating country...');
+        if (!validateText(address.country)) throw new Error('address.country is missing');
+        console.log('Validating phone...');
+        if (!validateText(phone)) throw new Error('phone is missing');
+        console.log('All validations passed.');
+
+        console.log('Creating contact...');
+        const contact = new Contact(req.body);
+
+        console.log('Saving contact...');
         await contact.save();
+
+        console.log('Contact saved.');
         res.status(201).json(contact);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Error:', error);
+        res.status(400).json({ error: error.message });
     }
 }
 
