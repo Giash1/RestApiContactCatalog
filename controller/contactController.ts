@@ -28,7 +28,18 @@ export async function createContact(req: Request, res: Response) {
 }
 
 
-export async function getContact(req: Request, res: Response) {
+export async function getContacts(req: Request, res: Response) {
+    try {
+        const contacts = await Contact.find();
+
+        res.json(contacts);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
+export async function getContactById(req: Request, res: Response) {
     const { id } = req.params;
 
     try {
@@ -43,5 +54,3 @@ export async function getContact(req: Request, res: Response) {
         res.status(500).json({ message: error.message });
     }
 }
-
-

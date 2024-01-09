@@ -1,14 +1,19 @@
-
-
-import { createContact, getContact as getContactController } from './contactController';
+import { createContact, getContacts, getContactById } from './contactController';
 import Contact from '../models/contact';
 import { Request, Response } from 'express';
 
+// Mock the individual methods of the Contact model
+Contact.prototype.save = jest.fn();
+Contact.find = jest.fn();
+Contact.findById = jest.fn();
+
 // creating contact
-describe('createContact', () => {
+describe('creatContact', () => {
     it('should create a new contact and return a 200 status', async () => {
         const saveSpy = jest.spyOn(Contact.prototype, 'save');
-        saveSpy.mockResolvedValueOnce({} as any);
+        saveSpy.mockImplementationOnce(() => Promise.resolve({} as any));
+
+    
 
         const req = {
             body: {
@@ -35,64 +40,36 @@ describe('createContact', () => {
 
         expect(saveSpy).toHaveBeenCalled();
         expect(res.json).toHaveBeenCalledWith(expect.any(Object));
-        expect(res.status).not.toHaveBeenCalled();
+        expect(res.status).toHaveBeenCalledWith(201); // expect a 201 status
 
         saveSpy.mockRestore();
     });
-});
-
+})
 
 // getting all contacts
 describe('getContacts', () => {
-    it('should get all contacts and return a 200 status', async () => {
+    it('should return an empty array if there are no contacts', async () => {
         const findSpy = jest.spyOn(Contact, 'find');
         findSpy.mockResolvedValueOnce([] as any);
-
         const req = {} as Request;
         const res = {
             json: jest.fn(),
             status: jest.fn().mockReturnThis()
         } as unknown as Response;
 
-        await getContact(req, res);
+        await getContacts(req, res);
 
         expect(findSpy).toHaveBeenCalled();
-        expect(res.json).toHaveBeenCalledWith(expect.any(Array));
+        expect(res.json).toHaveBeenCalledWith([]); // expect a json response
         expect(res.status).not.toHaveBeenCalled();
 
         findSpy.mockRestore();
     });
 });
 
-
 // getting a contact by id
-
 describe('getContactById', () => {
-    it('should get a contact by id and return a 200 status', async () => {
-        const req = {
-            params: {
-                id: 'someId'
-            }
-        } as unknown as Request;
-
-        const findByIdSpy = jest.spyOn(Contact, 'findById');
-
-        const res = {
-            json: jest.fn(),
-            status: jest.fn().mockReturnThis()
-        } as unknown as Response;
-
-        await getContact(req, res);
-
-        expect(findByIdSpy).toHaveBeenCalledWith('someId');
-        expect(res.json).toHaveBeenCalledWith(expect.any(Object));
-        expect(res.status).not.toHaveBeenCalled();
-
-        findByIdSpy.mockRestore();
-    });
-
-
-    it('should return a 404 status if the contact is not found', async () => {
+    it('should get a contact by id and not set the status', async () => {
         const req = {
             params: {
                 id: 'someId'
@@ -101,42 +78,46 @@ describe('getContactById', () => {
 
         const findByIdSpy = jest.spyOn(Contact, 'findById');
         findByIdSpy.mockResolvedValueOnce({} as any);
+
         const res = {
             json: jest.fn(),
             status: jest.fn().mockReturnThis()
         } as unknown as Response;
 
-        await getContact(req, res);
+        await getContactById(req, res);
 
         expect(findByIdSpy).toHaveBeenCalledWith('someId');
-        expect(res.json).not.toHaveBeenCalled();
+        expect(res.json).toHaveBeenCalledWith(expect.any(Object));
+        expect(res.status).not.toHaveBeenCalled();
+
+        findByIdSpy.mockRestore();
+    });
+
+    it('should return a 404 status and a message if the contact is not found', async () => {
+        const req = {
+            params: {
+                id: 'someId'
+            }
+        } as unknown as Request;
+
+        const findByIdSpy = jest.spyOn(Contact, 'findById');
+        findByIdSpy.mockResolvedValueOnce(null as any);
+
+        const res = {
+            json: jest.fn(),
+            status: jest.fn().mockReturnThis()
+        } as unknown as Response;
+
+        await getContactById(req, res);
+
+        expect(findByIdSpy).toHaveBeenCalledWith('someId');
+        expect(res.json).toHaveBeenCalledWith({ message: 'Contact not found' });
         expect(res.status).toHaveBeenCalledWith(404);
 
         findByIdSpy.mockRestore();
     });
 });
-   
-export async function getContact(req: Request, res: Response) {
-    try {
-        const contacts = await Contact.find();
-        res.json(contacts);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
-
-export async function getContactById(req: Request, res: Response) {
-    const { id } = req.params;
-
-    try {
-        const contact = await Contact.findById(id);
-
-        if (!contact) {
-            return res.status(404).json({ message: 'Contact not found' });
-        }
-
-        res.json(contact);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
+// Clear all mocks after each test
+afterEach(() => {
+    jest.clearAllMocks();
+});
