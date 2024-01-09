@@ -26,3 +26,22 @@ export async function createContact(req: Request, res: Response) {
         res.status(500).json({ message: error.message });
     }
 }
+
+
+export async function getContact(req: Request, res: Response) {
+    const { id } = req.params;
+
+    try {
+        const contact = await Contact.findById(id);
+
+        if (!contact) {
+            return res.status(404).json({ message: 'Contact not found' });
+        }
+
+        res.json(contact);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
