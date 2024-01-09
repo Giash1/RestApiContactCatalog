@@ -11,15 +11,15 @@ describe('createContact', () => {
 
         const req = {
             body: {
-                firstname: 'John',
-                lastname: 'Doe',
-                email: 'john.doe@gmail.com',
-                personalnumber: '123456-7890',
+                firstname: 'Anna',
+                lastname: 'Andersson',
+                email: 'anna.andersson@gmail.com',
+                personalnumber: '550713-1405',
                 address: {
-                    street: '123 Main St',
-                    city: 'Anytown',
-                    zipCode: '12345',
-                    country: 'USA'
+                    street: 'Development Street 12',
+                    city: 'Stockholm',
+                    zipCode: '111 22',
+                    country: 'Sweden'
                 },
                 phone: '1234567890'
             }
