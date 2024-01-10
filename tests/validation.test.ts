@@ -1,4 +1,4 @@
-import { validateEmail, validateZipCode, validatePersonalNumber, validateText  } from '../src/validation';
+import { validateEmail, validateZipCode, validatePersonalNumber, validateText } from '../src/validation/validation';
 
 describe('validateEmail', () => {
     it('should return true for a valid email', () => {

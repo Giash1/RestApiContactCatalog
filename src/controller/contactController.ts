@@ -2,31 +2,31 @@ import Contact from '../models/contact';
 import { Request, Response } from 'express';
 
 
-import { validateEmail, validateZipCode, validatePersonalNumber, validateText } from '../src/validation';
+import { validateEmail, validateZipCode, validatePersonalNumber, validateText } from '../validation/validation';
 
 export async function createContact(req: Request, res: Response) {
     const { firstname, lastname, email, personalnumber, address, phone } = req.body;
 
     try {
-        console.log('Validating firstname...');
+
         if (!validateText(firstname)) throw new Error('firstname is missing');
-        console.log('Validating lastname...');
+
         if (!validateText(lastname)) throw new Error('lastname is missing');
-        console.log('Validating email...');
+
         if (!validateEmail(email)) throw new Error('email is not valid');
-        console.log('Validating personalnumber...');
+
         if (!validatePersonalNumber(personalnumber)) throw new Error('personalnumber is not valid');
-        console.log('Validating address.street...');
+
         if (!validateText(address.street)) throw new Error('address.street is missing');
-        console.log('Validating address.city...');
+
         if (!validateText(address.city)) throw new Error('address.city is missing');
-        console.log('Validating adrees.zipcode...');
+
         if (!validateZipCode(address.zipCode)) throw new Error('address.zipCode is not valid');
-        console.log('Validating country...');
+
         if (!validateText(address.country)) throw new Error('address.country is missing');
-        console.log('Validating phone...');
+
         if (!validateText(phone)) throw new Error('phone is missing');
-        console.log('All validations passed.');
+
 
         console.log('Creating contact...');
         const contact = new Contact(req.body);

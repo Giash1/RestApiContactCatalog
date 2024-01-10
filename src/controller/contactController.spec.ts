@@ -1,7 +1,6 @@
 import { createContact, getContacts, getContactById } from './contactController';
 import Contact from '../models/contact';
 import { Request, Response } from 'express';
-
 // Mock the individual methods of the Contact model
 Contact.prototype.save = jest.fn();
 Contact.find = jest.fn();
@@ -13,7 +12,7 @@ describe('creatContact', () => {
         const saveSpy = jest.spyOn(Contact.prototype, 'save');
         saveSpy.mockImplementationOnce(() => Promise.resolve({} as any));
 
-    
+
 
         const req = {
             body: {
@@ -46,7 +45,7 @@ describe('creatContact', () => {
 
         saveSpy.mockRestore();
     });
-    
+
 })
 
 // getting all contacts
